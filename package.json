@@ -5,5 +5,10 @@
   "repository": "jasoncrawford/electricity-explorable",
   "main": "index.js",
   "author": "jason@jasoncrawford.org",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {}
 }
