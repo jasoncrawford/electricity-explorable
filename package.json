@@ -1,0 +1,8 @@
+{
+  "name": "electricity-explorable",
+  "version": "0.1.0",
+  "description": "An explorable explanation of the electric power grid",
+  "main": "index.js",
+  "author": "jason@jasoncrawford.org",
+  "license": "MIT"
+}
