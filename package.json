@@ -2,6 +2,7 @@
   "name": "electricity-explorable",
   "version": "0.1.0",
   "description": "An explorable explanation of the electric power grid",
+  "repository": "jasoncrawford/electricity-explorable",
   "main": "index.js",
   "author": "jason@jasoncrawford.org",
   "license": "MIT"
