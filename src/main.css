@@ -23,5 +23,30 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .root {
-  margin: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+  padding: 40px 20px;
+}
+
+.root .header {
+  flex: 0 0;
+}
+
+.root .content {
+  display: flex;
+  flex-direction: row;
+  flex: 1 0;
+}
+
+.diagram {
+  flex: 1 0;
+  border: solid 1px #eee;
+}
+
+.controls {
+  flex: 0 0;
+  background-color: #eee;
+  padding: 20px;
 }
