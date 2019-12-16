@@ -4,9 +4,9 @@ import "./main.css"
 
 export class RootView extends React.Component {
   render () {
-    return <>
+    return <div class="root">
       <h1>Electricity Explorable</h1>
       <p>Watch this space</p>
-    </>
+    </div>
   }
 }
