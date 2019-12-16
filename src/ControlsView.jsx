@@ -22,10 +22,33 @@ export class ControlsView extends React.Component {
     return this.props.model;
   }
 
+  renderMetalOptions() {
+    return this.model.metals.map(metal => (
+      <option key={metal.key} value={metal.key}>
+        {metal.name}
+      </option>
+    ));
+  }
+
   render() {
     return (
       <div className="controls">
         <form className="controls-form">
+          <div className="control-row">
+            <label className="left">Metal</label>
+            <select value={this.model.metalKey} onChange={e => (this.model.metalKey = e.target.value)}>
+              {this.renderMetalOptions()}
+            </select>
+          </div>
+          <div className="control-row">
+            <label className="left">Thickness (mm)</label>
+            <input
+              className="right"
+              type="number"
+              value={this.model.wireThicknessMm}
+              onChange={e => (this.model.wireThicknessMm = e.target.value)}
+            />
+          </div>
           <div className="control-row">
             <label className="left">Radius (km)</label>
             <input
@@ -50,6 +73,14 @@ export class ControlsView extends React.Component {
           <div className="control-row">
             <span className="left">Length of wire</span>
             <span className="right">{format(this.model.totalLengthOfWireKm)} km</span>
+          </div>
+          <div className="control-row">
+            <span className="left">Cost of metal</span>
+            <span className="right">${format(this.model.metal.priceDollarsPerKg)}/kg</span>
+          </div>
+          <div className="control-row">
+            <span className="left">Total cost of wire</span>
+            <span className="right">${format(this.model.totalCostOfWireDollars)}</span>
           </div>
         </form>
       </div>
