@@ -2,7 +2,7 @@ import { observable, computed } from "mobx";
 const { random, cos, sin, PI } = Math;
 
 export class Model {
-  @observable radius = 20;
+  @observable radius = 15;
 
   numCustomers = 150;
   customers = [];
