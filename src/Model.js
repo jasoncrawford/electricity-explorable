@@ -4,7 +4,7 @@ const { random, cos, sin, PI } = Math;
 export class Model {
   @observable radius = 15;
 
-  numCustomers = 150;
+  numCustomers = 80;
   customers = [];
 
   constructor() {
@@ -13,8 +13,12 @@ export class Model {
     }
   }
 
-  @computed get numCustomersInRadius() {
-    return this.customers.filter(c => this.isInRadius(c)).length;
+  @computed get activeCustomers() {
+    return this.customers.filter(c => this.isActive(c));
+  }
+
+  @computed get numActiveCustomers() {
+    return this.activeCustomers.length;
   }
 
   makeRandomCustomer(id) {
@@ -28,7 +32,7 @@ export class Model {
     };
   }
 
-  isInRadius(customer) {
+  isActive(customer) {
     return customer.r < this.radius;
   }
 }

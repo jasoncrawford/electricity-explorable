@@ -23,7 +23,7 @@ export class ControlsView extends React.Component {
           </div>
           <div className="control-row">
             <span className="left">Customers</span>
-            <span className="right">{this.model.numCustomersInRadius}</span>
+            <span className="right">{this.model.numActiveCustomers}</span>
           </div>
         </form>
       </div>
