@@ -11,15 +11,11 @@ export class ControlsView extends React.Component {
   render() {
     return (
       <form className="controls">
-        <label>
-          Radius
-          <input
-            type="number"
-            value={this.model.radius}
-            onChange={e => this.model.radius = e.target.value}
-          />
-        </label>
+        <div className="control-row">
+          <label>Radius</label>
+          <input type="number" value={this.model.radius} onChange={e => (this.model.radius = e.target.value)} />
+        </div>
       </form>
-    )
+    );
   }
 }
