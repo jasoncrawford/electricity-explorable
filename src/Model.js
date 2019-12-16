@@ -5,6 +5,7 @@ export class Model {
   numCustomers = 80;
   minRadiusKm = 8;
   maxRadiusKm = 60;
+  powerPerCustomerKw = 1.2;
 
   @observable radiusKm = 15;
   customers = [];
@@ -21,6 +22,10 @@ export class Model {
 
   @computed get numActiveCustomers() {
     return this.activeCustomers.length;
+  }
+
+  @computed get powerDeliveredKw() {
+    return this.numActiveCustomers * this.powerPerCustomerKw;
   }
 
   @computed get totalLengthOfWireKm() {
