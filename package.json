@@ -7,10 +7,15 @@
   "author": "jason@jasoncrawford.org",
   "license": "MIT",
   "dependencies": {
+    "mobx": "^5.15.1",
+    "mobx-react": "^6.1.4",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-proposal-decorators": "^7.7.4",
     "parcel-bundler": "^1.12.4"
   },
   "scripts": {
