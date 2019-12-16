@@ -2,9 +2,11 @@ import { observable, computed } from "mobx";
 const { random, cos, sin, PI } = Math;
 
 export class Model {
-  @observable radius = 15;
-
   numCustomers = 80;
+  minRadius = 8;
+  maxRadius = 60;
+
+  @observable radius = 15;
   customers = [];
 
   constructor() {
@@ -22,7 +24,7 @@ export class Model {
   }
 
   makeRandomCustomer(id) {
-    let r = 5 + random() * 55;
+    let r = this.minRadius + random() * (this.maxRadius - this.minRadius);
     let theta = random() * 2 * PI;
     return {
       id,
