@@ -44,6 +44,10 @@ export class ControlsView extends React.Component {
             <span className="right">{format(this.model.powerDeliveredKw)} kW</span>
           </div>
           <div className="control-row">
+            <span className="left">Revenue</span>
+            <span className="right">${format(this.model.revenueDollarsPerYr)}/yr</span>
+          </div>
+          <div className="control-row">
             <span className="left">Length of wire</span>
             <span className="right">{format(this.model.totalLengthOfWireKm)} km</span>
           </div>

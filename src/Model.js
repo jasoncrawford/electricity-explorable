@@ -1,11 +1,16 @@
 import { observable, computed } from "mobx";
 const { random, abs, cos, sin, PI } = Math;
 
+const hoursPerDay = 24;
+const daysPerYr = 365.2425;
+const hoursPerYr = hoursPerDay * daysPerYr;
+
 export class Model {
   numCustomers = 80;
   minRadiusKm = 8;
   maxRadiusKm = 60;
   powerPerCustomerKw = 1.2;
+  marketPriceDollarsPerKwHr = 0.15;
 
   @observable radiusKm = 15;
   customers = [];
@@ -26,6 +31,10 @@ export class Model {
 
   @computed get powerDeliveredKw() {
     return this.numActiveCustomers * this.powerPerCustomerKw;
+  }
+
+  @computed get revenueDollarsPerYr() {
+    return this.powerDeliveredKw * this.marketPriceDollarsPerKwHr * hoursPerYr;
   }
 
   @computed get totalLengthOfWireKm() {
