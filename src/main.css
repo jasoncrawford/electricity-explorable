@@ -52,29 +52,32 @@ h6 {
 }
 
 .controls {
-  display: table;
   height: 100%;
   flex: 0 0;
   background-color: #eee;
   padding: 20px;
 }
 
+.controls-form {
+  display: table;
+}
+
 .controls .control-row {
   display: table-row;
 }
 
-.controls label {
+.controls .left {
   display: table-cell;
   padding-right: 20px;
 }
 
-.controls input {
+.controls .right {
   display: table-cell;
   width: 80px;
 }
 
-.controls label,
-.controls input {
+.controls .left,
+.controls .right {
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
   font-size: 16px;
 }

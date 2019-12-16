@@ -1,4 +1,4 @@
-import { observable } from "mobx";
+import { observable, computed } from "mobx";
 const { random, cos, sin, PI } = Math;
 
 export class Model {
@@ -9,16 +9,26 @@ export class Model {
 
   constructor() {
     for (let i = 0; i < this.numCustomers; i++) {
-      this.customers[i] = this.makeRandomCustomer();
+      this.customers[i] = this.makeRandomCustomer(i);
     }
   }
 
-  makeRandomCustomer() {
+  @computed get numCustomersInRadius() {
+    return this.customers.filter(c => this.isInRadius(c)).length;
+  }
+
+  makeRandomCustomer(id) {
     let r = 5 + random() * 55;
     let theta = random() * 2 * PI;
     return {
+      id,
+      r,
       x: r * cos(theta),
       y: r * sin(theta)
     };
+  }
+
+  isInRadius(customer) {
+    return customer.r < this.radius;
   }
 }
