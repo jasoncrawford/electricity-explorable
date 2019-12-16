@@ -3,10 +3,10 @@ const { random, abs, cos, sin, PI } = Math;
 
 export class Model {
   numCustomers = 80;
-  minRadius = 8;
-  maxRadius = 60;
+  minRadiusKm = 8;
+  maxRadiusKm = 60;
 
-  @observable radius = 15;
+  @observable radiusKm = 15;
   customers = [];
 
   constructor() {
@@ -23,22 +23,22 @@ export class Model {
     return this.activeCustomers.length;
   }
 
-  @computed get totalLengthOfWire() {
-    return this.activeCustomers.reduce((sum, c) => (sum += abs(c.x) + abs(c.y)), 0);
+  @computed get totalLengthOfWireKm() {
+    return this.activeCustomers.reduce((sum, c) => (sum += abs(c.xKm) + abs(c.yKm)), 0);
   }
 
   makeRandomCustomer(id) {
-    let r = this.minRadius + random() * (this.maxRadius - this.minRadius);
+    let radiusKm = this.minRadiusKm + random() * (this.maxRadiusKm - this.minRadiusKm);
     let theta = random() * 2 * PI;
     return {
       id,
-      r,
-      x: r * cos(theta),
-      y: r * sin(theta)
+      radiusKm,
+      xKm: radiusKm * cos(theta),
+      yKm: radiusKm * sin(theta)
     };
   }
 
   isActive(customer) {
-    return customer.r < this.radius;
+    return customer.radiusKm < this.radiusKm;
   }
 }

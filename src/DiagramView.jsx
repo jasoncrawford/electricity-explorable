@@ -6,7 +6,7 @@ const { abs } = Math;
 
 @observer
 export class DiagramView extends React.Component {
-  scale = 10; // px / km
+  scalePxPerKm = 10;
 
   @observable bounds;
 
@@ -14,11 +14,11 @@ export class DiagramView extends React.Component {
     return this.props.model;
   }
 
-  @computed get width() {
+  @computed get widthPx() {
     return (this.bounds && this.bounds.width) || 100;
   }
 
-  @computed get height() {
+  @computed get heightPx() {
     return (this.bounds && this.bounds.height) || 100;
   }
 
@@ -27,34 +27,33 @@ export class DiagramView extends React.Component {
   }
 
   renderWireToCustomer(customer) {
-    let sx = customer.x * this.scale;
-    let sy = customer.y * this.scale;
+    let xPx = customer.xKm * this.scalePxPerKm;
+    let yPx = customer.yKm * this.scalePxPerKm;
 
     let d = "M 0 0 ";
-    if (abs(sx) > abs(sy)) {
-      d += `H ${sx / 2} V ${sy} H ${sx}`;
+    if (abs(xPx) > abs(yPx)) {
+      d += `H ${xPx / 2} V ${yPx} H ${xPx}`;
     } else {
-      d += `V ${sy / 2} H ${sx} V ${sy}`;
+      d += `V ${yPx / 2} H ${xPx} V ${yPx}`;
     }
     return <path key={`w-${customer.id}`} d={d} stroke="#ccc" fill="none" />;
   }
 
   renderCustomer(customer) {
-    let sx = customer.x * this.scale;
-    let sy = customer.y * this.scale;
-    let active = this.model.isActive(customer);
-    let color = active ? "#999" : "#ccc";
-    return <circle key={`c-${customer.id}`} cx={sx} cy={sy} r="7" fill={color} />;
+    let xPx = customer.xKm * this.scalePxPerKm;
+    let yPx = customer.yKm * this.scalePxPerKm;
+    let color = this.model.isActive(customer) ? "#999" : "#ccc";
+    return <circle key={`c-${customer.id}`} cx={xPx} cy={yPx} r="7" fill={color} />;
   }
 
   render() {
     return (
       <svg ref={el => (this.svg = el)} className="diagram">
-        <g transform={`translate(${this.width / 2} ${this.height / 2})`}>
+        <g transform={`translate(${this.widthPx / 2} ${this.heightPx / 2})`}>
           {this.model.activeCustomers.map(c => this.renderWireToCustomer(c))}
           {this.model.customers.map(c => this.renderCustomer(c))}
           <rect x="-25" y="-25" width="50" height="50" stroke="#999" fill="#fff" />
-          <circle cx="0" cy="0" r={this.model.radius * this.scale} stroke="#999" fill="none" />
+          <circle cx="0" cy="0" r={this.model.radiusKm * this.scalePxPerKm} stroke="#999" fill="none" />
         </g>
       </svg>
     );

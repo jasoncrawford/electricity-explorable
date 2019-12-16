@@ -27,12 +27,12 @@ export class ControlsView extends React.Component {
       <div className="controls">
         <form className="controls-form">
           <div className="control-row">
-            <label className="left">Radius</label>
+            <label className="left">Radius (km)</label>
             <input
               className="right"
               type="number"
-              value={this.model.radius}
-              onChange={e => (this.model.radius = e.target.value)}
+              value={this.model.radiusKm}
+              onChange={e => (this.model.radiusKm = e.target.value)}
             />
           </div>
           <div className="control-row">
@@ -41,7 +41,7 @@ export class ControlsView extends React.Component {
           </div>
           <div className="control-row">
             <span className="left">Length of wire</span>
-            <span className="right">{format(this.model.totalLengthOfWire)} km</span>
+            <span className="right">{format(this.model.totalLengthOfWireKm)} km</span>
           </div>
         </form>
       </div>
