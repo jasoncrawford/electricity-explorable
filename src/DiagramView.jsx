@@ -2,6 +2,8 @@ import * as React from "react";
 import { computed, observable } from "mobx";
 import { observer } from "mobx-react";
 
+const { abs } = Math;
+
 @observer
 export class DiagramView extends React.Component {
   scale = 10; // px / km
@@ -29,7 +31,7 @@ export class DiagramView extends React.Component {
     let sy = customer.y * this.scale;
 
     let d = "M 0 0 ";
-    if (Math.abs(sx) > Math.abs(sy)) {
+    if (abs(sx) > abs(sy)) {
       d += `H ${sx / 2} V ${sy} H ${sx}`;
     } else {
       d += `V ${sy / 2} H ${sx} V ${sy}`;

@@ -1,5 +1,5 @@
 import { observable, computed } from "mobx";
-const { random, cos, sin, PI } = Math;
+const { random, abs, cos, sin, PI } = Math;
 
 export class Model {
   numCustomers = 80;
@@ -21,6 +21,10 @@ export class Model {
 
   @computed get numActiveCustomers() {
     return this.activeCustomers.length;
+  }
+
+  @computed get totalLengthOfWire() {
+    return this.activeCustomers.reduce((sum, c) => (sum += abs(c.x) + abs(c.y)), 0);
   }
 
   makeRandomCustomer(id) {
