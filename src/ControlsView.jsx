@@ -30,6 +30,24 @@ export class ControlsView extends React.Component {
     ));
   }
 
+  renderProfitOrLoss() {
+    if (this.model.isProfitable) {
+      return (
+        <div className="control-row">
+          <span className="left">Profit</span>
+          <span className="right">${format(this.model.profitDollarsPerYr)}/yr</span>
+        </div>
+      );
+    } else {
+      return (
+        <div className="control-row">
+          <span className="left">Loss</span>
+          <span className="right">${format(this.model.lossDollarsPerYr)}/yr</span>
+        </div>
+      );
+    }
+  }
+
   render() {
     return (
       <div className="controls">
@@ -83,6 +101,7 @@ export class ControlsView extends React.Component {
             <span className="left">Revenue</span>
             <span className="right">${format(this.model.revenueDollarsPerYr)}/yr</span>
           </div>
+          {this.renderProfitOrLoss()}
           <div className="control-row">
             <span className="left">Length of wire</span>
             <span className="right">{format(this.model.totalLengthOfWireKm)} km</span>

@@ -48,6 +48,7 @@ export class Model {
   maxRadiusKm = 60;
   powerPerCustomerKw = 1.2;
   marketPriceDollarsPerKwHr = 0.15;
+  costOfFuelDollarPerKwHr = 0.1;
   costOfPlantDollars = 4.7e6;
 
   metals = metals;
@@ -86,6 +87,22 @@ export class Model {
 
   @computed get revenueDollarsPerYr() {
     return this.powerDeliveredKw * this.marketPriceDollarsPerKwHr * hoursPerYr;
+  }
+
+  @computed get expensesDollarsPerYr() {
+    return this.totalPowerGeneratedKw * this.costOfFuelDollarPerKwHr * hoursPerYr;
+  }
+
+  @computed get profitDollarsPerYr() {
+    return this.revenueDollarsPerYr - this.expensesDollarsPerYr;
+  }
+
+  @computed get lossDollarsPerYr() {
+    return -this.profitDollarsPerYr;
+  }
+
+  @computed get isProfitable() {
+    return this.profitDollarsPerYr >= 0;
   }
 
   distanceToCustomerKm(customer) {
