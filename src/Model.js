@@ -1,5 +1,5 @@
 import { observable, computed } from "mobx";
-const { random, abs, cos, sin, PI, round, atan2, sqrt } = Math;
+const { random, abs, cos, sin, PI, round, sqrt } = Math;
 
 const hoursPerDay = 24;
 const daysPerYr = 365.2425;
@@ -7,6 +7,8 @@ const hoursPerYr = hoursPerDay * daysPerYr;
 
 const ozPerLb = 16;
 const lbPerKg = 2.20462;
+
+const sum = array => array.reduce((a, b) => a + b, 0);
 
 // https://en.wikipedia.org/wiki/Electrical_resistivity_and_conductivity#Resistivity_and_conductivity_of_various_materials
 // https://sites.google.com/site/chempendix/densities-of-pure-metals
@@ -53,6 +55,7 @@ export class Model {
   @observable radiusKm = 15;
   @observable.ref metal = metalsByKey["copper"];
   @observable wireThicknessMm = 10;
+  @observable voltageV = 100;
   customers = [];
 
   constructor() {
@@ -85,8 +88,34 @@ export class Model {
     return this.powerDeliveredKw * this.marketPriceDollarsPerKwHr * hoursPerYr;
   }
 
+  distanceToCustomerKm(customer) {
+    return abs(customer.xKm) + abs(customer.yKm);
+  }
+
+  powerLostForCustomerKw(customer) {
+    let distanceM = this.distanceToCustomerKm(customer) * 1000;
+    let thicknessM = this.wireThicknessMm / 1000;
+    let radiusM = thicknessM / 2;
+    let crossSectionalAreaM2 = PI * radiusM * radiusM;
+    let resistanceOhm = (this.metal.resistivityOhmM * distanceM) / crossSectionalAreaM2;
+    let currentA = (this.powerPerCustomerKw * 1000) / this.voltageV;
+    return (currentA * currentA * resistanceOhm) / 1000;
+  }
+
+  @computed get totalPowerLostKw() {
+    return sum(this.activeCustomers.map(c => this.powerLostForCustomerKw(c)));
+  }
+
+  @computed get totalPowerGeneratedKw() {
+    return this.powerDeliveredKw + this.totalPowerLostKw;
+  }
+
+  @computed get efficiency() {
+    return this.powerDeliveredKw / this.totalPowerGeneratedKw;
+  }
+
   @computed get totalLengthOfWireKm() {
-    return this.activeCustomers.reduce((sum, c) => (sum += abs(c.xKm) + abs(c.yKm)), 0);
+    return sum(this.activeCustomers.map(c => this.distanceToCustomerKm(c)));
   }
 
   @computed get totalVolumeOfWireCm3() {

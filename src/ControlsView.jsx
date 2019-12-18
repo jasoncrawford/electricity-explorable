@@ -35,6 +35,15 @@ export class ControlsView extends React.Component {
       <div className="controls">
         <form className="controls-form">
           <div className="control-row">
+            <label className="left">Voltage (V)</label>
+            <input
+              className="right"
+              type="number"
+              value={this.model.voltageV}
+              onChange={e => (this.model.voltageV = e.target.value)}
+            />
+          </div>
+          <div className="control-row">
             <label className="left">Metal</label>
             <select value={this.model.metalKey} onChange={e => (this.model.metalKey = e.target.value)}>
               {this.renderMetalOptions()}
@@ -65,6 +74,10 @@ export class ControlsView extends React.Component {
           <div className="control-row">
             <span className="left">Power delivered</span>
             <span className="right">{format(this.model.powerDeliveredKw)} kW</span>
+          </div>
+          <div className="control-row">
+            <span className="left">Efficiency</span>
+            <span className="right">{format(this.model.efficiency * 100)}%</span>
           </div>
           <div className="control-row">
             <span className="left">Revenue</span>
