@@ -156,6 +156,10 @@ export class Model {
     return this.costOfPlantDollars + this.totalCostOfWireDollars;
   }
 
+  @computed get returnOnInvestmentPerYr() {
+    return this.profitDollarsPerYr / this.totalCapitalNeededDollars;
+  }
+
   makeRandomCustomer(id) {
     const gridSizeKm = 2;
     let radiusKm = this.minRadiusKm + random() * (this.maxRadiusKm - this.minRadiusKm);

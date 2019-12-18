@@ -33,10 +33,16 @@ export class ControlsView extends React.Component {
   renderProfitOrLoss() {
     if (this.model.isProfitable) {
       return (
-        <div className="control-row">
-          <span className="left">Profit</span>
-          <span className="right">${format(this.model.profitDollarsPerYr)}/yr</span>
-        </div>
+        <>
+          <div className="control-row">
+            <span className="left">Profit</span>
+            <span className="right">${format(this.model.profitDollarsPerYr)}/yr</span>
+          </div>
+          <div className="control-row">
+            <span className="left">ROI</span>
+            <span className="right">${format(this.model.returnOnInvestmentPerYr * 100)}%/yr</span>
+          </div>
+        </>
       );
     } else {
       return (
@@ -98,11 +104,6 @@ export class ControlsView extends React.Component {
             <span className="right">{format(this.model.efficiency * 100)}%</span>
           </div>
           <div className="control-row">
-            <span className="left">Revenue</span>
-            <span className="right">${format(this.model.revenueDollarsPerYr)}/yr</span>
-          </div>
-          {this.renderProfitOrLoss()}
-          <div className="control-row">
             <span className="left">Length of wire</span>
             <span className="right">{format(this.model.totalLengthOfWireKm)} km</span>
           </div>
@@ -118,6 +119,11 @@ export class ControlsView extends React.Component {
             <span className="left">Total capital needed</span>
             <span className="right">${format(this.model.totalCapitalNeededDollars)}</span>
           </div>
+          <div className="control-row">
+            <span className="left">Revenue</span>
+            <span className="right">${format(this.model.revenueDollarsPerYr)}/yr</span>
+          </div>
+          {this.renderProfitOrLoss()}
         </form>
       </div>
     );
