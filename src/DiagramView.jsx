@@ -2,7 +2,7 @@ import * as React from "react";
 import { computed, observable } from "mobx";
 import { observer } from "mobx-react";
 
-const { abs } = Math;
+const { abs, round, trunc } = Math;
 
 @observer
 export class DiagramView extends React.Component {
@@ -27,16 +27,30 @@ export class DiagramView extends React.Component {
   }
 
   renderWireToCustomer(customer) {
+    const gridSizePx = 80;
+
     let xPx = customer.xKm * this.scalePxPerKm;
     let yPx = customer.yKm * this.scalePxPerKm;
 
-    let d = "M 0 0 ";
+    let longerPx, shorterPx, dir1, dir2;
     if (abs(xPx) > abs(yPx)) {
-      d += `H ${xPx / 2} V ${yPx} H ${xPx}`;
+      longerPx = xPx;
+      shorterPx = yPx;
+      dir1 = "H";
+      dir2 = "V";
     } else {
-      d += `V ${yPx / 2} H ${xPx} V ${yPx}`;
+      longerPx = yPx;
+      shorterPx = xPx;
+      dir1 = "V";
+      dir2 = "H";
     }
-    return <path key={`w-${customer.id}`} d={d} stroke="#ccc" fill="none" />;
+
+    let midpointPx = longerPx / 2;
+    let roundMidPx = round(midpointPx / gridSizePx) * gridSizePx;
+    let truncLongPx = trunc(longerPx / gridSizePx) * gridSizePx;
+    let truncShortPx = trunc(shorterPx / gridSizePx) * gridSizePx;
+    let path = ["M 0 0", dir1, roundMidPx, dir2, truncShortPx, dir1, truncLongPx, dir2, shorterPx, dir1, longerPx];
+    return <path key={`w-${customer.id}`} d={path.join(" ")} stroke="#ccc" fill="none" />;
   }
 
   renderCustomer(customer) {

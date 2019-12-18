@@ -1,5 +1,5 @@
 import { observable, computed } from "mobx";
-const { random, abs, cos, sin, PI } = Math;
+const { random, abs, cos, sin, PI, round, atan2, sqrt } = Math;
 
 const hoursPerDay = 24;
 const daysPerYr = 365.2425;
@@ -106,14 +106,15 @@ export class Model {
   }
 
   makeRandomCustomer(id) {
+    const gridSizeKm = 2;
     let radiusKm = this.minRadiusKm + random() * (this.maxRadiusKm - this.minRadiusKm);
     let theta = random() * 2 * PI;
-    return {
-      id,
-      radiusKm,
-      xKm: radiusKm * cos(theta),
-      yKm: radiusKm * sin(theta)
-    };
+    let xKm = radiusKm * cos(theta);
+    let yKm = radiusKm * sin(theta);
+    xKm = round(xKm / gridSizeKm) * gridSizeKm;
+    yKm = round(yKm / gridSizeKm) * gridSizeKm;
+    radiusKm = sqrt(xKm * xKm + yKm * yKm);
+    return { id, radiusKm, xKm, yKm };
   }
 
   isActive(customer) {
