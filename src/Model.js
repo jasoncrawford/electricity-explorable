@@ -90,7 +90,7 @@ export class Model {
   }
 
   @computed get expensesDollarsPerYr() {
-    return this.totalPowerGeneratedKw * this.costOfFuelDollarPerKwHr * hoursPerYr;
+    return this.powerGeneratedKw * this.costOfFuelDollarPerKwHr * hoursPerYr;
   }
 
   @computed get profitDollarsPerYr() {
@@ -119,45 +119,45 @@ export class Model {
     return (currentA * currentA * resistanceOhm) / 1000;
   }
 
-  @computed get totalPowerLostKw() {
+  @computed get powerLostKw() {
     return sum(this.activeCustomers.map(c => this.powerLostForCustomerKw(c)));
   }
 
-  @computed get totalPowerGeneratedKw() {
-    return this.powerDeliveredKw + this.totalPowerLostKw;
+  @computed get powerGeneratedKw() {
+    return this.powerDeliveredKw + this.powerLostKw;
   }
 
   @computed get efficiency() {
-    return this.powerDeliveredKw / this.totalPowerGeneratedKw;
+    return this.powerDeliveredKw / this.powerGeneratedKw;
   }
 
-  @computed get totalLengthOfWireKm() {
+  @computed get lengthOfWireKm() {
     return sum(this.activeCustomers.map(c => this.distanceToCustomerKm(c)));
   }
 
-  @computed get totalVolumeOfWireCm3() {
-    let lengthCm = this.totalLengthOfWireKm * 1000 * 100;
+  @computed get volumeOfWireCm3() {
+    let lengthCm = this.lengthOfWireKm * 1000 * 100;
     let thicknessCm = this.wireThicknessMm / 10;
     let radiusCm = thicknessCm / 2;
     let areaCm2 = PI * radiusCm * radiusCm;
     return lengthCm * areaCm2;
   }
 
-  @computed get totalMassOfWireKg() {
-    let massG = this.totalVolumeOfWireCm3 * this.metal.densityGPerCm3;
+  @computed get massOfWireKg() {
+    let massG = this.volumeOfWireCm3 * this.metal.densityGPerCm3;
     return massG / 1000;
   }
 
-  @computed get totalCostOfWireDollars() {
-    return this.totalMassOfWireKg * this.metal.priceDollarsPerKg;
+  @computed get costOfWireDollars() {
+    return this.massOfWireKg * this.metal.priceDollarsPerKg;
   }
 
-  @computed get totalCapitalNeededDollars() {
-    return this.costOfPlantDollars + this.totalCostOfWireDollars;
+  @computed get capitalNeededDollars() {
+    return this.costOfPlantDollars + this.costOfWireDollars;
   }
 
   @computed get returnOnInvestmentPerYr() {
-    return this.profitDollarsPerYr / this.totalCapitalNeededDollars;
+    return this.profitDollarsPerYr / this.capitalNeededDollars;
   }
 
   makeRandomCustomer(id) {

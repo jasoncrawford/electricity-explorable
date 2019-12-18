@@ -104,20 +104,20 @@ export class ControlsView extends React.Component {
             <span className="right">{format(this.model.efficiency * 100)}%</span>
           </div>
           <div className="control-row">
-            <span className="left">Length of wire</span>
-            <span className="right">{format(this.model.totalLengthOfWireKm)} km</span>
+            <span className="left">Length of wires</span>
+            <span className="right">{format(this.model.lengthOfWireKm)} km</span>
           </div>
           <div className="control-row">
             <span className="left">Cost of metal</span>
             <span className="right">${format(this.model.metal.priceDollarsPerKg)}/kg</span>
           </div>
           <div className="control-row">
-            <span className="left">Total cost of wire</span>
-            <span className="right">${format(this.model.totalCostOfWireDollars)}</span>
+            <span className="left">Cost of wires</span>
+            <span className="right">${format(this.model.costOfWireDollars)}</span>
           </div>
           <div className="control-row">
-            <span className="left">Total capital needed</span>
-            <span className="right">${format(this.model.totalCapitalNeededDollars)}</span>
+            <span className="left">Capital needed</span>
+            <span className="right">${format(this.model.capitalNeededDollars)}</span>
           </div>
           <div className="control-row">
             <span className="left">Revenue</span>
