@@ -46,6 +46,7 @@ export class Model {
   maxRadiusKm = 60;
   powerPerCustomerKw = 1.2;
   marketPriceDollarsPerKwHr = 0.15;
+  costOfPlantDollars = 4.7e6;
 
   metals = metals;
 
@@ -103,6 +104,10 @@ export class Model {
 
   @computed get totalCostOfWireDollars() {
     return this.totalMassOfWireKg * this.metal.priceDollarsPerKg;
+  }
+
+  @computed get totalCapitalNeededDollars() {
+    return this.costOfPlantDollars + this.totalCostOfWireDollars;
   }
 
   makeRandomCustomer(id) {

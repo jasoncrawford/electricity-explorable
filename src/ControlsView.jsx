@@ -82,6 +82,10 @@ export class ControlsView extends React.Component {
             <span className="left">Total cost of wire</span>
             <span className="right">${format(this.model.totalCostOfWireDollars)}</span>
           </div>
+          <div className="control-row">
+            <span className="left">Total capital needed</span>
+            <span className="right">${format(this.model.totalCapitalNeededDollars)}</span>
+          </div>
         </form>
       </div>
     );
