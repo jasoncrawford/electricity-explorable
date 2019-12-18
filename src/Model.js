@@ -46,16 +46,16 @@ export class Model {
   numCustomers = 80;
   minRadiusKm = 8;
   maxRadiusKm = 60;
-  powerPerCustomerKw = 1.2;
+  powerPerCustomerKw = 12;
   marketPriceDollarsPerKwHr = 0.15;
   costOfFuelDollarPerKwHr = 0.1;
   costOfPlantDollars = 4.7e6;
 
   metals = metals;
 
-  @observable radiusKm = 15;
+  @observable radiusKm = 12;
   @observable.ref metal = metalsByKey["copper"];
-  @observable wireThicknessMm = 10;
+  @observable wireThicknessMm = 30;
   @observable voltageV = 100;
   customers = [];
 
