@@ -50,12 +50,14 @@ export class Model {
   marketPriceDollarsPerKwHr = 0.15;
   costOfFuelDollarPerKwHr = 0.1;
   costOfPlantDollars = 4.7e6;
+  customerVoltageThresholdV = 300;
 
   metals = metals;
 
   @observable radiusKm = 12;
   @observable.ref metal = metalsByKey["copper"];
   @observable wireThicknessMm = 30;
+  @observable currentType = "dc";
   @observable voltageV = 100;
   customers = [];
 
@@ -74,6 +76,7 @@ export class Model {
   }
 
   @computed get activeCustomers() {
+    if (this.currentType === "dc" && this.voltageV > this.customerVoltageThresholdV) return [];
     return this.customers.filter(c => this.isActive(c));
   }
 

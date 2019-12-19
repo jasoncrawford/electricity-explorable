@@ -26,15 +26,23 @@ export class ControlsView extends React.Component {
     return this.model.metals.map(metal => ({ key: metal.key, value: metal.name }));
   }
 
+  @computed get currentOptions() {
+    return [
+      { key: "dc", value: "DC" },
+      { key: "ac", value: "AC" },
+    ];
+  }
+
   @computed get inputSection() {
     return {
       title: "Inputs",
       rows: [
-        { type: "input", label: "Service radius (km)", key: "radiusKm" },
-        { type: "input", label: "Voltage (V)", key: "voltageV" },
+        { type: "input", label: "Radius (km)", key: "radiusKm" },
         { type: "select", label: "Metal", key: "metalKey", options: this.metalOptions },
         { type: "output", label: "Cost of metal", value: `\$${format(this.model.metal.priceDollarsPerKg)}/kg` },
         { type: "input", label: "Thickness (mm)", key: "wireThicknessMm" },
+        { type: "radio", label: "Current", key: "currentType", options: this.currentOptions },
+        { type: "input", label: "Voltage (V)", key: "voltageV" },
       ],
     };
   }
@@ -106,6 +114,27 @@ export class ControlsView extends React.Component {
             value={this.model[row.key]}
             onChange={e => (this.model[row.key] = e.target.value)}
           />
+        </>
+      );
+    }
+    if (row.type === "radio") {
+      return (
+        <>
+          <label className="left">{row.label}</label>
+          <div className="right">
+            {row.options.map(option => (
+              <label key={option.key}>
+                <input
+                  type="radio"
+                  name={row.key}
+                  value={option.key}
+                  checked={this.model[row.key] === option.key}
+                  onChange={() => (this.model[row.key] = option.key)}
+                />
+                <span className="radio-label">{option.value}</span>
+              </label>
+            ))}
+          </div>
         </>
       );
     }

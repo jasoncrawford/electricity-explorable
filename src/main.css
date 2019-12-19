@@ -90,3 +90,8 @@ h6 {
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
   font-size: 16px;
 }
+
+.controls .radio-label {
+  padding: 0 12px 0 4px;
+  vertical-align: middle;
+}
