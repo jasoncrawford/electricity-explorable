@@ -26,25 +26,49 @@ export class ControlsView extends React.Component {
     return this.model.metals.map(metal => ({ key: metal.key, value: metal.name }));
   }
 
-  @computed get rows() {
-    let rows = [
-      { type: "input", label: "Voltage (V)", key: "voltageV" },
-      { type: "select", label: "Metal", key: "metalKey", options: this.metalOptions },
-      { type: "input", label: "Thickness (mm)", key: "wireThicknessMm" },
-      { type: "input", label: "Radius (km)", key: "radiusKm" },
-      { type: "output", label: "Customers", value: this.model.numActiveCustomers }
-    ];
+  @computed get inputSection() {
+    return {
+      title: "Inputs",
+      rows: [
+        { type: "input", label: "Voltage (V)", key: "voltageV" },
+        { type: "select", label: "Metal", key: "metalKey", options: this.metalOptions },
+        { type: "output", label: "Cost of metal", value: `\$${format(this.model.metal.priceDollarsPerKg)}/kg` },
+        { type: "input", label: "Thickness (mm)", key: "wireThicknessMm" },
+        { type: "input", label: "Radius (km)", key: "radiusKm" }
+      ]
+    };
+  }
 
-    if (this.model.numActiveCustomers < 1) return rows;
+  @computed get powerDeliverySection() {
+    let rows = [{ type: "output", label: "Customers", value: this.model.numActiveCustomers }];
 
-    rows.push(
-      { type: "output", label: "Power delivered", value: `${format(this.model.powerDeliveredKw)} kW` },
-      { type: "output", label: "Efficiency", value: `${format(this.model.efficiency * 100)}%` },
-      { type: "output", label: "Length of wires", value: `${format(this.model.lengthOfWireKm)} km` },
-      { type: "output", label: "Cost of wires", value: `\$${format(this.model.costOfWireDollars)}` },
-      { type: "output", label: "Capital needed", value: `\$${format(this.model.capitalNeededDollars)}` },
-      { type: "output", label: "Revenue", value: `\$${format(this.model.revenueDollarsPerYr)}/yr` }
-    );
+    if (this.model.numActiveCustomers > 0) {
+      rows.push(
+        { type: "output", label: "Power delivered", value: `${format(this.model.powerDeliveredKw)} kW` },
+        { type: "output", label: "Efficiency", value: `${format(this.model.efficiency * 100)}%` }
+      );
+    }
+
+    return { title: "Power delivery", rows };
+  }
+
+  @computed get capitalSection() {
+    if (this.model.numActiveCustomers < 1) return undefined;
+
+    return {
+      title: "Capital requirements",
+      rows: [
+        { type: "output", label: "Length of wires", value: `${format(this.model.lengthOfWireKm)} km` },
+        { type: "output", label: "Cost of wires", value: `\$${format(this.model.costOfWireDollars)}` },
+        { type: "output", label: "Capital needed", value: `\$${format(this.model.capitalNeededDollars)}` }
+      ]
+    };
+  }
+
+  @computed get businessOutcomesSection() {
+    if (this.model.revenueDollarsPerYr === 0) return undefined;
+
+    let rows = [{ type: "output", label: "Revenue", value: `\$${format(this.model.revenueDollarsPerYr)}/yr` }];
 
     if (this.model.isProfitable) {
       rows.push(
@@ -55,7 +79,12 @@ export class ControlsView extends React.Component {
       rows.push({ type: "output", label: "Loss", value: `\$${format(this.model.lossDollarsPerYr)}/yr` });
     }
 
-    return rows;
+    return { title: "Business outcomes", rows };
+  }
+
+  @computed get sections() {
+    let sections = [this.inputSection, this.powerDeliverySection, this.capitalSection, this.businessOutcomesSection];
+    return sections.filter(s => !!s);
   }
 
   renderRowContents(row) {
@@ -104,10 +133,21 @@ export class ControlsView extends React.Component {
     );
   }
 
+  renderSection(section) {
+    return (
+      <>
+        <div key={section.title} className="section-row">
+          <h3 className="section-title">{section.title}</h3>
+        </div>
+        {section.rows.map(r => this.renderRow(r))}
+      </>
+    );
+  }
+
   render() {
     return (
       <div className="controls">
-        <form className="controls-form">{this.rows.map(r => this.renderRow(r))}</form>
+        <form className="controls-form">{this.sections.map(s => this.renderSection(s))}</form>
       </div>
     );
   }

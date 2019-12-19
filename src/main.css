@@ -62,8 +62,15 @@ h6 {
   display: table;
 }
 
-.controls .control-row {
+.controls .control-row,
+.controls .section-row {
   display: table-row;
+}
+
+.controls .section-title {
+  display: table-cell;
+  padding: 10px 0;
+  font-size: 16px;
 }
 
 .controls .left {
