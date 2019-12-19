@@ -22,109 +22,92 @@ export class ControlsView extends React.Component {
     return this.props.model;
   }
 
-  renderMetalOptions() {
-    return this.model.metals.map(metal => (
-      <option key={metal.key} value={metal.key}>
-        {metal.name}
-      </option>
-    ));
+  @computed get metalOptions() {
+    return this.model.metals.map(metal => ({ key: metal.key, value: metal.name }));
   }
 
-  renderProfitOrLoss() {
+  @computed get rows() {
+    let rows = [
+      { type: "input", label: "Voltage (V)", key: "voltageV" },
+      { type: "select", label: "Metal", key: "metalKey", options: this.metalOptions },
+      { type: "input", label: "Thickness (mm)", key: "wireThicknessMm" },
+      { type: "input", label: "Radius (km)", key: "radiusKm" },
+      { type: "output", label: "Customers", value: this.model.numActiveCustomers }
+    ];
+
+    if (this.model.numActiveCustomers < 1) return rows;
+
+    rows.push(
+      { type: "output", label: "Power delivered", value: `${format(this.model.powerDeliveredKw)} kW` },
+      { type: "output", label: "Efficiency", value: `${format(this.model.efficiency * 100)}%` },
+      { type: "output", label: "Length of wires", value: `${format(this.model.lengthOfWireKm)} km` },
+      { type: "output", label: "Cost of wires", value: `\$${format(this.model.costOfWireDollars)}` },
+      { type: "output", label: "Capital needed", value: `\$${format(this.model.capitalNeededDollars)}` },
+      { type: "output", label: "Revenue", value: `\$${format(this.model.revenueDollarsPerYr)}/yr` }
+    );
+
     if (this.model.isProfitable) {
-      return (
-        <>
-          <div className="control-row">
-            <span className="left">Profit</span>
-            <span className="right">${format(this.model.profitDollarsPerYr)}/yr</span>
-          </div>
-          <div className="control-row">
-            <span className="left">ROI</span>
-            <span className="right">${format(this.model.returnOnInvestmentPerYr * 100)}%/yr</span>
-          </div>
-        </>
+      rows.push(
+        { type: "output", label: "Profit", value: `\$${format(this.model.profitDollarsPerYr)}/yr` },
+        { type: "output", label: "ROI", value: `${format(this.model.returnOnInvestmentPerYr * 100)}%/yr` }
       );
     } else {
+      rows.push({ type: "output", label: "Loss", value: `\$${format(this.model.lossDollarsPerYr)}/yr` });
+    }
+
+    return rows;
+  }
+
+  renderRowContents(row) {
+    if (row.type === "output") {
       return (
-        <div className="control-row">
-          <span className="left">Loss</span>
-          <span className="right">${format(this.model.lossDollarsPerYr)}/yr</span>
-        </div>
+        <>
+          <span className="left">{row.label}</span>
+          <span className="right">{row.value}</span>
+        </>
       );
     }
+    if (row.type === "input") {
+      return (
+        <>
+          <label className="left">{row.label}</label>
+          <input
+            className="right"
+            type="number"
+            value={this.model[row.key]}
+            onChange={e => (this.model[row.key] = e.target.value)}
+          />
+        </>
+      );
+    }
+    if (row.type === "select") {
+      return (
+        <>
+          <label className="left">{row.label}</label>
+          <select className="right" value={this.model[row.key]} onChange={e => (this.model[row.key] = e.target.value)}>
+            {row.options.map(option => (
+              <option key={option.key} value={option.key}>
+                {option.value}
+              </option>
+            ))}
+          </select>
+        </>
+      );
+    }
+  }
+
+  renderRow(row) {
+    return (
+      <div key={row.label} className="control-row">
+        {this.renderRowContents(row)}
+      </div>
+    );
   }
 
   render() {
     return (
       <div className="controls">
-        <form className="controls-form">
-          <div className="control-row">
-            <label className="left">Voltage (V)</label>
-            <input
-              className="right"
-              type="number"
-              value={this.model.voltageV}
-              onChange={e => (this.model.voltageV = e.target.value)}
-            />
-          </div>
-          <div className="control-row">
-            <label className="left">Metal</label>
-            <select value={this.model.metalKey} onChange={e => (this.model.metalKey = e.target.value)}>
-              {this.renderMetalOptions()}
-            </select>
-          </div>
-          <div className="control-row">
-            <label className="left">Thickness (mm)</label>
-            <input
-              className="right"
-              type="number"
-              value={this.model.wireThicknessMm}
-              onChange={e => (this.model.wireThicknessMm = e.target.value)}
-            />
-          </div>
-          <div className="control-row">
-            <label className="left">Radius (km)</label>
-            <input
-              className="right"
-              type="number"
-              value={this.model.radiusKm}
-              onChange={e => (this.model.radiusKm = e.target.value)}
-            />
-          </div>
-          <div className="control-row">
-            <span className="left">Customers</span>
-            <span className="right">{this.model.numActiveCustomers}</span>
-          </div>
-          <div className="control-row">
-            <span className="left">Power delivered</span>
-            <span className="right">{format(this.model.powerDeliveredKw)} kW</span>
-          </div>
-          <div className="control-row">
-            <span className="left">Efficiency</span>
-            <span className="right">{format(this.model.efficiency * 100)}%</span>
-          </div>
-          <div className="control-row">
-            <span className="left">Length of wires</span>
-            <span className="right">{format(this.model.lengthOfWireKm)} km</span>
-          </div>
-          <div className="control-row">
-            <span className="left">Cost of metal</span>
-            <span className="right">${format(this.model.metal.priceDollarsPerKg)}/kg</span>
-          </div>
-          <div className="control-row">
-            <span className="left">Cost of wires</span>
-            <span className="right">${format(this.model.costOfWireDollars)}</span>
-          </div>
-          <div className="control-row">
-            <span className="left">Capital needed</span>
-            <span className="right">${format(this.model.capitalNeededDollars)}</span>
-          </div>
-          <div className="control-row">
-            <span className="left">Revenue</span>
-            <span className="right">${format(this.model.revenueDollarsPerYr)}/yr</span>
-          </div>
-          {this.renderProfitOrLoss()}
-        </form>
+        <form className="controls-form">{this.rows.map(r => this.renderRow(r))}</form>
       </div>
     );
   }
