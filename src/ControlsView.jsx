@@ -30,12 +30,12 @@ export class ControlsView extends React.Component {
     return {
       title: "Inputs",
       rows: [
+        { type: "input", label: "Service radius (km)", key: "radiusKm" },
         { type: "input", label: "Voltage (V)", key: "voltageV" },
         { type: "select", label: "Metal", key: "metalKey", options: this.metalOptions },
         { type: "output", label: "Cost of metal", value: `\$${format(this.model.metal.priceDollarsPerKg)}/kg` },
         { type: "input", label: "Thickness (mm)", key: "wireThicknessMm" },
-        { type: "input", label: "Radius (km)", key: "radiusKm" }
-      ]
+      ],
     };
   }
 
@@ -60,8 +60,8 @@ export class ControlsView extends React.Component {
       rows: [
         { type: "output", label: "Length of wires", value: `${format(this.model.lengthOfWireKm)} km` },
         { type: "output", label: "Cost of wires", value: `\$${format(this.model.costOfWireDollars)}` },
-        { type: "output", label: "Capital needed", value: `\$${format(this.model.capitalNeededDollars)}` }
-      ]
+        { type: "output", label: "Capital needed", value: `\$${format(this.model.capitalNeededDollars)}` },
+      ],
     };
   }
 

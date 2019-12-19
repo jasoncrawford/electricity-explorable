@@ -26,7 +26,7 @@ const metals = [
   // { key: "lithium", name: "Lithium", resistivityOhmM: 9.28e-8, densityGPerCm3: 0.53 },
   // { key: "iron", name: "Iron", resistivityOhmM: 9.7e-8, densityGPerCm3: 7.87 },
   { key: "platinum", name: "Platinum", resistivityOhmM: 1.06e-7, densityGPerCm3: 21.5, priceDollarsPerOz: 943.0 },
-  { key: "tin", name: "Tin", resistivityOhmM: 1.09e-7, densityGPerCm3: 7.26, priceDollarsPerLb: 7.7904 }
+  { key: "tin", name: "Tin", resistivityOhmM: 1.09e-7, densityGPerCm3: 7.26, priceDollarsPerLb: 7.7904 },
 ];
 
 metals.forEach(metal => {
